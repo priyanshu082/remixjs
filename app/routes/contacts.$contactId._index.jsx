@@ -1,16 +1,21 @@
-import { Form } from "@remix-run/react";
+import { Form, json, useLoaderData } from "@remix-run/react";
+import { getContact } from "../data";
+
+export const loader=async({params})=>{
+    const contact = await getContact(params.contactId)
+    if (!contact) {
+        throw new Response("Not Found", { status: 404 });
+      }
+    return json({contact})
+}
 
 export default function Contact() {
-  const contact = {
-    first: "Your",
-    last: "Name",
-    avatar: "https://placekitten.com/200/200",
-    twitter: "your_handle",
-    notes: "Some notes",
-    favorite: true,
-  };
+    const { contact } = useLoaderData();
+console.log(contact)
 
   return (
+  
+    
     <div id="contact">
       <div>
         <img

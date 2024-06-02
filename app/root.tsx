@@ -5,15 +5,37 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLoaderData,
+  useNavigation,
 } from "@remix-run/react";
 import type { LinksFunction } from "@remix-run/node";
 import stylesheet from "~/app.css?url";
+import { createEmptyContact, getContacts } from "./data";
+import { json } from "@remix-run/node";
+import { Link } from "@remix-run/react";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },
 ];
 
+export const action=async()=>{
+  const contact=await createEmptyContact()
+  return json({contact})
+}
+
+
+
+//fetching data 
+export const loader =async()=>{
+  const contacts = await getContacts();
+  return json(contacts)
+}
+
 export default function App() {
+  const navigation=useNavigation()
+
+const isSubmitting=!(navigation.state==='idle')
+  const contacts=useLoaderData<typeof loader>()
   return (
     <html lang="en">
       <head>
@@ -37,10 +59,34 @@ export default function App() {
               <div id="search-spinner" aria-hidden hidden={true} />
             </Form>
             <Form method="post">
-              <button type="submit">New</button>
+              <button type="submit">{isSubmitting ? "Creating...":"New"}</button>
             </Form>
           </div>
           <nav>
+          {contacts.length ? (
+              <ul>
+                {contacts.map((contact) => (
+                  <li key={contact.id}>
+                    <Link to={`contacts/${contact.id}`}>
+                      {contact.first || contact.last ? (
+                        <>
+                          {contact.first} {contact.last}
+                        </>
+                      ) : (
+                        <i>No Name</i>
+                      )}{" "}
+                      {contact.favorite ? (
+                        <span>★</span>
+                      ) : null}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>
+                <i>No contacts</i>
+              </p>
+            )}
             <ul>
               <li>
                 <a href={`/contacts/1`}>Your Name</a>
