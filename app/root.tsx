@@ -1,18 +1,19 @@
 import {
+  Form,
   Links,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
-import stylesheet from "~/tailwind.css?url";
-import { LinksFunction } from "@remix-run/node";
+import type { LinksFunction } from "@remix-run/node";
+import stylesheet from "~/app.css?url";
 
-export const links:LinksFunction=()=>[
+export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },
-]
+];
 
-export function Layout({ children }: { children: React.ReactNode }) {
+export default function App() {
   return (
     <html lang="en">
       <head>
@@ -22,14 +23,41 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        {children}
+        <div id="sidebar">
+          <h1>Remix Contacts</h1>
+          <div>
+            <Form id="search-form" role="search">
+              <input
+                id="q"
+                aria-label="Search contacts"
+                placeholder="Search"
+                type="search"
+                name="q"
+              />
+              <div id="search-spinner" aria-hidden hidden={true} />
+            </Form>
+            <Form method="post">
+              <button type="submit">New</button>
+            </Form>
+          </div>
+          <nav>
+            <ul>
+              <li>
+                <a href={`/contacts/1`}>Your Name</a>
+              </li>
+              <li>
+                <a href={`/contacts/2`}>Your Friend</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+        <div>
+          <Outlet/>
+        </div>
+
         <ScrollRestoration />
         <Scripts />
       </body>
     </html>
   );
-}
-
-export default function App() {
-  return <Outlet />;
 }
