@@ -29,22 +29,6 @@ export default function Index() {
 
   return (
     <div >
-      <div 
-      onClick={handleIncrement}
-      className="bg-yellow-500 p-[10px]">
-        +
-      </div>
-      <div
-      onClick={handleDecrement}
-       className="bg-pink-500 p-[10px]">
-        -
-      </div>
-
-      {counter}
-
-      <h1 className="text-sm font-bold underline">
-      Hello world!
-    </h1>
 
     {blogs.map((item,key)=>(
         <Link 

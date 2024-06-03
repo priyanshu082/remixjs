@@ -2,6 +2,7 @@ import {
   Form,
   Links,
   Meta,
+  NavLink,
   Outlet,
   Scripts,
   ScrollRestoration,
@@ -12,7 +13,7 @@ import type { LinksFunction } from "@remix-run/node";
 import stylesheet from "~/app.css?url";
 import { createEmptyContact, getContacts } from "./data";
 import { json } from "@remix-run/node";
-import { Link } from "@remix-run/react";
+
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },
@@ -67,7 +68,12 @@ const isSubmitting=!(navigation.state==='idle')
               <ul>
                 {contacts.map((contact) => (
                   <li key={contact.id}>
-                    <Link to={`contacts/${contact.id}`}>
+                    <NavLink 
+                    className={({ isActive, isPending }) =>
+                      isActive ? "active" : isPending ? "pending" : ""
+                    }
+                    
+                    to={`contacts/${contact.id}`}>
                       {contact.first || contact.last ? (
                         <>
                           {contact.first} {contact.last}
@@ -78,7 +84,7 @@ const isSubmitting=!(navigation.state==='idle')
                       {contact.favorite ? (
                         <span>★</span>
                       ) : null}
-                    </Link>
+                    </NavLink>
                   </li>
                 ))}
               </ul>
@@ -97,7 +103,10 @@ const isSubmitting=!(navigation.state==='idle')
             </ul>
           </nav>
         </div>
-        <div>
+        <div  className={
+            navigation.state === "loading" ? "loading" : ""
+          }
+          id="detail">
           <Outlet/>
         </div>
 

@@ -1,9 +1,8 @@
 
 import { json } from "@remix-run/node";
-import { Form, useLoaderData } from "@remix-run/react";
+import { Form, redirect, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
-
-import { getContact } from "../data";
+import { getContact, updateContact } from "../data";
 
 export const loader = async ({
   params,
@@ -15,6 +14,14 @@ export const loader = async ({
   }
   return json({ contact });
 };
+
+export const action=async({params,request})=>{
+  const formData=await request.formData()
+  console.log(formData)
+  const updates=Object.fromEntries(formData)
+  await updateContact(params.contactId,updates)
+  return redirect(`/contacts/${params.contactId}`)
+}
 
 export default function EditContact() {
   const { contact } = useLoaderData();
