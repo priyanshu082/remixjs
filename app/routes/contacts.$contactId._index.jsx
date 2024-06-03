@@ -55,7 +55,7 @@ console.log(contact)
           </Form>
 
           <Form
-            action="destroy"
+            action="delete"
             method="post"
             onSubmit={(event) => {
               const response = confirm(

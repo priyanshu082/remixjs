@@ -28,18 +28,11 @@ export default function Index() {
   }
 
   return (
-    <div >
-
-    {blogs.map((item,key)=>(
-        <Link 
-        to={`/blogs/${item.id}`}
-        key={key} 
-        className="w-[400px] shadow-xl border-[1px] flex flex-col gap-[10px] mt-[20px] bg-gray-200 p-[10px]">
-          <div>Number:-{item.id}</div>
-          <div>Title:-{item.title}</div>
-          <div>Content:-{item.body}</div>
-        </Link>
-    ))}
-    </div>
+    <p id="index-page">
+      This is a demo for Remix.
+      <br />
+      Check out{" "}
+      <a href="https://remix.run">the docs at remix.run</a>.
+    </p>
   );
 }

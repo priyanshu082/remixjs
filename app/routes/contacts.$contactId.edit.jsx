@@ -3,6 +3,7 @@ import { json } from "@remix-run/node";
 import { Form, redirect, useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import { getContact, updateContact } from "../data";
+import { useNavigate } from "@remix-run/react";
 
 export const loader = async ({
   params,
@@ -24,6 +25,7 @@ export const action=async({params,request})=>{
 }
 
 export default function EditContact() {
+  const navigate =useNavigate();
   const { contact } = useLoaderData();
 
   return (
@@ -74,7 +76,9 @@ export default function EditContact() {
       </label>
       <p>
         <button type="submit">Save</button>
-        <button type="button">Cancel</button>
+        <button onClick={() => navigate(-1)} type="button">
+          cancel
+          </button>
       </p>
     </Form>
   );
